@@ -1,0 +1,24 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.formatOnSave": true,
+		"pylint.args": [
+			"--disable=unused-argument, redefined-outer-name, line-too-long, wrong-import-position, wrong-import-order, missing-module-docstring, missing-function-docstring, missing-class-docstring, invalid-name, consider-using-enumerate, too-many-locals, too-many-arguments, bad-classmethod-argument, import-outside-toplevel, unused-variable"
+		],
+		"editor.defaultFormatter": "ms-python.black-formatter",
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-python.python",
+			"ms-python.debugpy",
+			"donjayamanne.python-environment-manager",
+			"ms-python.vscode-pylance",
+			"ms-python.pylint",
+			"ms-python.black-formatter"
+		]
+	}
+}

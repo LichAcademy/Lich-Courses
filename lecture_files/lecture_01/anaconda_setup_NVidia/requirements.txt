@@ -1,0 +1,21 @@
+torchsde
+einops
+transformers>=4.25.1
+safetensors>=0.3.0
+aiohttp
+pyyaml
+Pillow
+scipy
+tqdm
+psutil
+GitPython
+PyGithub
+matrix-client==0.4.0
+huggingface-hub>0.20
+typer
+rich
+typing-extensions
+
+#non essential dependencies:
+kornia>=0.7.1
+spandrel
