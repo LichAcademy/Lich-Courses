@@ -31,5 +31,5 @@ conda activate kohya
 
 conda install python=3.10.11 --yes
 
-conda install cuda --channel "nvidia\label\cuda-11.8.0" --yes
+conda install cuda --channel nvidia/label/cuda-11.8.0 --yes
 ```
