@@ -50,25 +50,17 @@ This command allows the use of wildcards. For example, to search for all availab
 conda search python=3.10*
 ```
 
-And lastly, to remove an environment, you can use `remove` command:
+To remove a package, for example, `cuda` from `py311` environment, you can use:
+
+```sh
+conda remove --name py311 cuda
+```
+
+And lastly, to remove all packages and delete the environment, you can use `remove` command:
 
 ```sh
 conda remove --name py311 --all
 ```
-
-Flag `--all` removes all the packages in the environment, and the environment itself. If you want to keep the environment but remove all the packages, you can use `--all` flag without the environment name:
-
-```sh
-conda remove --all
-```
-
-If you don't include `--all` flag:
-
-```sh
-conda remove --name py311
-```
-
-Conda will prompt you to specify which package you wish to remove from `py311` environment. 
 
 ### Installing Packages
 
