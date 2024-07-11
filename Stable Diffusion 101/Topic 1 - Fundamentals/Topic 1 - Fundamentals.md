@@ -29,7 +29,7 @@
     - [Step 3. Set up VS Code](#step-3-set-up-vs-code)
     - [Step 4. Activate `py311` Environment](#step-4-activate-py311-environment)
     - [Step 5. Install Dependencies](#step-5-install-dependencies)
-  - [Kohya GUI](#kohya-gui)
+  - [Kohya GUI Setup](#kohya-gui-setup)
   - [Assignment Solution](#assignment-solution)
     - [Step 1. Create Conda Environment](#step-1-create-conda-environment)
 
@@ -369,7 +369,7 @@ And you are done. Launch the `main.py` file and you should see the ComfyUI runni
 ![alt text](Figures/screen07.png)
 
 
-## Kohya GUI
+## Kohya GUI Setup
 
 ```sh
 conda create --name kohya --yes
@@ -380,6 +380,8 @@ conda install python=3.10.11 --yes
 
 conda install cuda --channel nvidia/label/cuda-11.8.0 --yes
 ```
+
+The run `setup.bat` file to install the dependencies. Once you are done, you can start GUI by running `gui.bat` file.
 
 ## Assignment Solution
 
@@ -393,11 +395,6 @@ We create a new conda environment, and give it name `comfy3D`:
 conda create --name comfy3D --yes
 conda activate comfy3D
 conda install python=3.11.9 --yes
-
-# Or:
-conda install python=3.11.9 --name comfy3D --yes
-conda install python=3.11.9 --name comfy3D --yes
-conda install cuda --channel nvidia/label/cuda-12.1.0 --channel nvidia/label/cuda-12.1.1 --name comfy3D --yes
 ```
 
 Since repository requires CUDA 12.1, you were expected to do some research. Eventually, you would discover archived documentation page on Nvidia website regarding CUDA 12.1:
@@ -410,27 +407,27 @@ The command I used was:
 conda install cuda --channel nvidia/label/cuda-12.1.0 --channel nvidia/label/cuda-12.1.1 --yes
 ```
 
-Note that I am using official nvidia channel. If you went to Anaconda website, it is possible you discovered other channels offering the same package, in which case your command would look different. For purposes of this assignment, I don't think it matters which channel you use here.
-
 Clone ComfyUI repository:
 
 ```sh
 git clone https://github.com/comfyanonymous/ComfyUI.git
 ```
 
-Assuming you have Nvidia graphics card with CUDA-compatible GPU, you can install these dependencies:
+You install ComfyUI's Nvidia-specific dependencies:
 
 ```sh
 pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
 ```
 
-For the rest of the dependencies, you can use the provided `requirements.txt` file:
+And generel dependencies inside `requirements.txt` file:
 
 ```sh
 pip install -r requirements.txt
 ```
 
-You Git-clone Comfy-3D repository:
+Open the `custom_nodes` folder in terminal, and clone Comfy3D repository:
+
+![alt text](Figures/screen05.png)
 
 And then you install the dependencies:
 
@@ -440,16 +437,18 @@ pip install -r requirements_post.txt
 pip install xformers --index-url https://download.pytorch.org/whl/cu121
 ```
 
-At this point, I have encountered an error telling me that `roma` and `rembg` are missing. It would seem that the developer did not include `roma` and `rembg` in the `requirements.txt` file. You can install them using:
+If you run `main.py`, everything should now work. It did not work for me though.
+
+I have encountered an error telling me that `roma` and `rembg` are missing. It would seem that the developer did not include `roma` and `rembg` in the `requirements.txt` file. You can install them using:
 
 ```sh
 pip install roma
 pip install rembg
 ```
 
-Now, you run `main.py`, and everything should work, right?
+If you run `main.py`, everything should now work. It did not work for me though.
 
-Nope. You will encounter another error:
+I got this error:
 
 > ERROR: pip's dependency resolver does not currently take into account all the packages that are installed. This behaviour is the source of the following dependency conflicts.
 > torchaudio 2.3.1+cu121 requires torch==2.3.1+cu121, but you have torch 2.3.0+cu121 which is incompatible.
@@ -461,4 +460,6 @@ I resolved it using the following:
 pip install torch==2.3.0+cu121 torchaudio==2.3.0+cu121 torchvision==0.18.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121
 ```
 
+If you run `main.py`, everything should now work.
 
+If you are still having issues, I have exported my environment into a `yaml` file, to make it easier on you.
