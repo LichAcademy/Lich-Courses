@@ -1,5 +1,5 @@
 # Topic 1: Fundamentals (WORK IN PROGRESS)
-
+<!-- markdownlint-disable no-inline-html -->
 ## Table of Contents
 
 - [Topic 1: Fundamentals (WORK IN PROGRESS)](#topic-1-fundamentals-work-in-progress)
@@ -19,6 +19,8 @@
     - [Step 1. Create Conda Environment for A1111](#step-1-create-conda-environment-for-a1111)
     - [Step 2. Clone Repository](#step-2-clone-repository)
     - [Step 3. Set up Visual Studio Project](#step-3-set-up-visual-studio-project)
+    - [Step 4. Activate `py310` Environment](#step-4-activate-py310-environment)
+    - [Step 5. Run `webui-user.bat` Script](#step-5-run-webui-userbat-script)
     - [Creating `py311`](#creating-py311)
     - [Creating `kohya`](#creating-kohya)
   - [Assignment Solution](#assignment-solution)
@@ -147,11 +149,11 @@ git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 
 ### Step 3. Set up Visual Studio Project
 
-As shown in the video, you can open the folder in Visual Studio Code by right-clicking on the folder and selecting `Open in Visual Studio Code`. Alternatively, you can open the project by typing `code .` in the terminal (while inside the folder). Save the workspace by choosing `Save Workspace As...` from the `File` menu. This will create a `.code-workspace` file in the folder. You can then open the project by double-clicking on the `.code-workspace` file.
+As shown in the video, you can right-click on the folder and select `Open in Visual Studio Code`. Alternatively, you can open the project by typing `code .` in the terminal (while inside the folder). Save the workspace by choosing `Save Workspace As...` from the `File` menu. This will create a `.code-workspace` file in the folder. You can then open the project by double-clicking on the `.code-workspace` file.
 
 This file is actually a JSON file that contains various settings for the project. For example, if you open the `.code-workspace` file in a text editor, you will see something like this:
 
-```json
+```jsonc
 {
     "folders": [
         {
@@ -162,13 +164,10 @@ This file is actually a JSON file that contains various settings for the project
 }
 ```
 
-You can edit this file.
+Any changes made to the workspace settings are reflected in this file. This is convenient, because this lets me share my VS Code configuration with you:
 
-```json
-// Unlike JSON files, code-workspace files allow for comments. I will try to explain what I am doing and why.
-
-// Any changes I make here won't impact your settings outside of this workspace.
-
+```jsonc
+// Unlike 'regular' JSON files, code-workspace files allow for comments. I will try to explain what I am doing and why.
 {
     "folders": [
         {
@@ -181,7 +180,7 @@ You can edit this file.
         "editor.fontSize": 16, // We increase the font size from 14 to 16 (just my personal preference)
         "editor.wordWrap": "on", // We enable 'word wrap' so that long lines of code are wrapped to the next line.
         "editor.defaultFormatter": "ms-python.black-formatter", // We set the default formatter to 'black', which is the name of a code formatter for Python.
-        "editor.formatOnSave": true, // Each time you save, the code will be formatted.
+        "editor.formatOnSave": true, // Each time you save, 'Black' will format the code for you.
 
         // Linters are tools that analyze your code to find errors and enforce coding standards.
         // These are some of the linting rules that I disabled for 'pylint' (Python Linter). Unless you are following my 'Learning Python with ComfyUI' tutorials, you don't need to worry about this bit.
@@ -190,7 +189,7 @@ You can edit this file.
         ],
     },
     "extensions": {
-        // To save you the trouble of searching for extensions, I have included a list of recommended extensions. You can install them by clicking on the 'Install' button that appears when you open this workspace.
+        // To save you the trouble of searching for extensions, I have included a list of recommended extensions. Instead of making you manually search for each extensions, you will be offerred to install recommended extensions when you first open this workspace.
         "recommendations": [
             "ms-python.debugpy",
             "donjayamanne.python-environment-manager",
@@ -199,13 +198,27 @@ You can edit this file.
             "ms-python.black-formatter",
             "nilssoderman.batch-runner",
             "ms-python.python",
-            "equinusocio.vsc-material-theme-icons"
+            "equinusocio.vsc-material-theme-icons" // This one is optional. It changes the icons in the sidebar, so that you, too, can be 'cool' like me.
         ]
     }
 }
 ```
 
 The script that installs all the dependencies automatically is inside `webui-user.bat` file:
+
+### Step 4. Activate `py310` Environment
+
+Using Don Jayamanne's Python Environment Manager, you can set the active workspace environment by clicking the ⭐ icon next to `py310`.
+
+<div style="text-align: center;">
+    <img src="Figures/screen01.png" alt="alt text" width="600" style="border:2px solid black;">
+</div>
+
+Whenever you open the terminal, it will automatically activate the `py310` environment.
+
+### Step 5. Run `webui-user.bat` Script
+
+We will run the script that installs all the dependencies.
 
 ```bat
 @echo off
@@ -218,11 +231,13 @@ set COMMANDLINE_ARGS=
 call webui.bat
 ```
 
-However, before we run this script, let let me show you some useful arguments you can provide.
+However, **before we run this script**, let let me show you some useful arguments you can provide.
 
-For example, this script automatically creates `venv` virtual environment. This is not an issue, although it does create environment within an environment unnecessarily. I will specify `-` as `VENV_DIR`.
+For example, this script automatically creates `venv` virtual environment. Although this is not a problem, it is redundant, since we are already inside conda environment. To avoid creating environment within environment ("dream within a dream within a dream", if get the reference 😉 ) you can specify `VENV_DIR` value as `-`.
 
-Another thing that catches me every time, script downloads Stable Diffusion 1.5 base model. To opt-out, you need to add `--no-download-sd-model` to `COMMANDLINE_ARGS`.
+Another thing that catches me every time, script downloads Stable Diffusion 1.5 base model (additional 4 GB dowload). To opt-out, you need to add `--no-download-sd-model` to `COMMANDLINE_ARGS`.
+
+Our webui-user.bat script will look like this:
 
 ```bat
 @echo off
@@ -235,6 +250,10 @@ set COMMANDLINE_ARGS=^
 
 call webui.bat
 ```
+
+You should now be able to run the script as usual.
+
+<img src="Figures/screen02.png" alt="alt text" width="600" style="border:2px solid black;">
 
 ### Creating `py311`
 
