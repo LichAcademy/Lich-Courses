@@ -1,5 +1,7 @@
 # Topic 1: Fundamentals (WORK IN PROGRESS)
-<!-- markdownlint-disable no-inline-html -->
+
+**Note: Everything in this tutorial assumes that you have Nvidia graphics card with CUDA-compatible GPU.**
+
 ## Table of Contents
 
 - [Topic 1: Fundamentals (WORK IN PROGRESS)](#topic-1-fundamentals-work-in-progress)
@@ -15,14 +17,19 @@
       - [Listing Installed Packages](#listing-installed-packages)
       - [Deleting Packages](#deleting-packages)
     - [Delete Environment](#delete-environment)
-  - [Stable Diffusion WebUI Setup (Automatic1111)](#stable-diffusion-webui-setup-automatic1111)
+  - [Automatic1111 Setup](#automatic1111-setup)
     - [Step 1. Create Conda Environment for A1111](#step-1-create-conda-environment-for-a1111)
     - [Step 2. Clone Repository](#step-2-clone-repository)
-    - [Step 3. Set up Visual Studio Project](#step-3-set-up-visual-studio-project)
-    - [Step 4. Activate `py310` Environment](#step-4-activate-py310-environment)
+    - [Step 3. Set up Visual Studio Code](#step-3-set-up-visual-studio-code)
+    - [Step 4. Activate Conda Environment](#step-4-activate-conda-environment)
     - [Step 5. Run `webui-user.bat` Script](#step-5-run-webui-userbat-script)
-    - [Creating `py311`](#creating-py311)
-    - [Creating `kohya`](#creating-kohya)
+  - [ComfyUI Setup](#comfyui-setup)
+    - [Step 1. Create Conda Environment for ComfyUI](#step-1-create-conda-environment-for-comfyui)
+    - [Step 2. Clone ComfyUI Repository](#step-2-clone-comfyui-repository)
+    - [Step 3. Set up VS Code](#step-3-set-up-vs-code)
+    - [Step 4. Activate `py311` Environment](#step-4-activate-py311-environment)
+    - [Step 5. Install Dependencies](#step-5-install-dependencies)
+  - [Kohya GUI](#kohya-gui)
   - [Assignment Solution](#assignment-solution)
     - [Step 1. Create Conda Environment](#step-1-create-conda-environment)
 
@@ -71,22 +78,18 @@ conda activate py310 # Unless already activated
 conda install python
 ```
 
-As with creation of environments, you can answer affirmatively to all upcoming prompts by adding `--yes` flag:
+You can specify the version of the package you want to install. For example, to install `Python 3.10.6` into the `py310` environment, you can use the following command.
 
 ```sh
+# As with environment creation, you can skip the prompt by adding `--yes` flag.
+conda activate py310
 conda install python=3.10.6 --yes
-```
-
-You can specify the version of the package you want to install. For example, to install `Python 3.10.6` into the `py310` environment, you can use the following command:
-
-```sh
-conda install python=3.10.6
 ```
 
 You can also install packages into the environment without activating it. For example, to install `Python 3.11.9` into the `py311` environment without activating it, you can use the following command:
 
 ```sh
-conda install python=3.11.9 --name py311
+conda install python=3.11.9 --yes --name py311
 ```
 
 #### Searching for Packages
@@ -96,7 +99,8 @@ If you are not sure how to spell the package name, or want to see the package ve
 ```sh
 conda search python
 
-# Note that you can also use wildcards, if you are not sure about the exact package name:
+# Note that you can also use wildcards, if you are not sure about the
+# exact package name:
 conda search *ython
 conda search python=3.10*
 ```
@@ -114,7 +118,7 @@ conda list
 To remove a package, for example, `cuda` from `py311` environment, you can use:
 
 ```sh
-conda remove --name py311 cuda
+conda remove cuda --name py311
 ```
 
 ### Delete Environment
@@ -122,10 +126,10 @@ conda remove --name py311 cuda
 To delete the environment along with all its packages, you can use `remove` command:
 
 ```sh
-conda remove --name py311 --all
+conda remove --name py311 --all --yes
 ```
 
-## Stable Diffusion WebUI Setup (Automatic1111)
+## Automatic1111 Setup
 
 ### Step 1. Create Conda Environment for A1111
 
@@ -147,7 +151,7 @@ Assuming you have installed `git`, you can clone the repository. Easiest way is 
 git clone https://github.com/AUTOMATIC1111/stable-diffusion-webui.git
 ```
 
-### Step 3. Set up Visual Studio Project
+### Step 3. Set up Visual Studio Code
 
 As shown in the video, you can right-click on the folder and select `Open in Visual Studio Code`. Alternatively, you can open the project by typing `code .` in the terminal (while inside the folder). Save the workspace by choosing `Save Workspace As...` from the `File` menu. This will create a `.code-workspace` file in the folder. You can then open the project by double-clicking on the `.code-workspace` file.
 
@@ -167,58 +171,43 @@ This file is actually a JSON file that contains various settings for the project
 Any changes made to the workspace settings are reflected in this file. This is convenient, because this lets me share my VS Code configuration with you:
 
 ```jsonc
-// Unlike 'regular' JSON files, code-workspace files allow for comments. I will try to explain what I am doing and why.
 {
     "folders": [
         {
             "path": "."
         }
     ],
-
-    // The 'settings' object contains the settings that apply to the workspace.
     "settings": {
-        "editor.fontSize": 16, // We increase the font size from 14 to 16 (just my personal preference)
-        "editor.wordWrap": "on", // We enable 'word wrap' so that long lines of code are wrapped to the next line.
-        "editor.defaultFormatter": "ms-python.black-formatter", // We set the default formatter to 'black', which is the name of a code formatter for Python.
-        "editor.formatOnSave": true, // Each time you save, 'Black' will format the code for you.
-
-        // Linters are tools that analyze your code to find errors and enforce coding standards.
-        // These are some of the linting rules that I disabled for 'pylint' (Python Linter). Unless you are following my 'Learning Python with ComfyUI' tutorials, you don't need to worry about this bit.
-        "pylint.args": [
-            "--disable=unused-argument, redefined-outer-name, line-too-long, wrong-import-position, wrong-import-order, missing-module-docstring, missing-function-docstring, missing-class-docstring, invalid-name, consider-using-enumerate, too-many-locals, too-many-arguments, bad-classmethod-argument, import-outside-toplevel, unused-variable"
-        ],
+        "editor.fontSize": 16, // Increase font size from 14 to 16
+        "files.eol": "\n", // Set the 'end of line' character to '\n' (Unix-style line endings)
+        "editor.wordWrap": "on", // Long lines of code are to be wrapped to the next line.
+        "editor.defaultFormatter": "ms-python.black-formatter", // 'Black' is popular code formatter for Python.
+        "editor.formatOnSave": true, // Each time you save, the code will be formatted.
     },
     "extensions": {
-        // To save you the trouble of searching for extensions, I have included a list of recommended extensions. Instead of making you manually search for each extensions, you will be offerred to install recommended extensions when you first open this workspace.
         "recommendations": [
-            "ms-python.debugpy",
-            "donjayamanne.python-environment-manager",
-            "ms-python.vscode-pylance",
-            "ms-python.pylint",
-            "ms-python.black-formatter",
-            "nilssoderman.batch-runner",
-            "ms-python.python",
-            "equinusocio.vsc-material-theme-icons" // This one is optional. It changes the icons in the sidebar, so that you, too, can be 'cool' like me.
+            "ms-python.python", // Python extension
+            "ms-python.debugpy", // Python debugger
+            "donjayamanne.python-environment-manager", // Python environment manager
+            "ms-python.vscode-pylance", // Python language server
+            "ms-python.pylint", // Python linter
+            "ms-python.black-formatter" // Python code formatter
         ]
     }
 }
 ```
 
-The script that installs all the dependencies automatically is inside `webui-user.bat` file:
-
-### Step 4. Activate `py310` Environment
+### Step 4. Activate Conda Environment
 
 Using Don Jayamanne's Python Environment Manager, you can set the active workspace environment by clicking the ⭐ icon next to `py310`.
 
-<div style="text-align: center;">
-    <img src="Figures/screen01.png" alt="alt text" width="600" style="border:2px solid black;">
-</div>
+![alt text](Figures/screen01.png)
 
-Whenever you open the terminal, it will automatically activate the `py310` environment.
+Whenever you open the terminal in this workspace, it will automatically activate the `py310` environment. Note that you won't see the environment name in the brackets, but you can confirm the active environment by running `conda env list` command.
 
 ### Step 5. Run `webui-user.bat` Script
 
-We will run the script that installs all the dependencies.
+Lastly, we will run the script that installs all the dependencies.
 
 ```bat
 @echo off
@@ -231,13 +220,13 @@ set COMMANDLINE_ARGS=
 call webui.bat
 ```
 
-However, **before we run this script**, let let me show you some useful arguments you can provide.
+However, **before we run this script**, let's make a few tweaks.
 
 For example, this script automatically creates `venv` virtual environment. Although this is not a problem, it is redundant, since we are already inside conda environment. To avoid creating environment within environment ("dream within a dream within a dream", if get the reference 😉 ) you can specify `VENV_DIR` value as `-`.
 
-Another thing that catches me every time, script downloads Stable Diffusion 1.5 base model (additional 4 GB dowload). To opt-out, you need to add `--no-download-sd-model` to `COMMANDLINE_ARGS`.
+Another thing that catches me every time, script downloads Stable Diffusion 1.5 base model (additional 4 GB dowload). You will normally be using fine-tuned model from community. To opt-out from this behavious, you need to add `--no-download-sd-model` to `COMMANDLINE_ARGS`.
 
-Our webui-user.bat script will look like this:
+Our `webui-user.bat` script will look like this:
 
 ```bat
 @echo off
@@ -251,13 +240,15 @@ set COMMANDLINE_ARGS=^
 call webui.bat
 ```
 
-You should now be able to run the script as usual.
-
-<img src="Figures/screen02.png" alt="alt text" width="600" style="border:2px solid black;">
+You should now be able to run the script by right-clicking on the file:
 
 ![screen02](Figures/screen02.png)
 
-### Creating `py311`
+## ComfyUI Setup
+
+### Step 1. Create Conda Environment for ComfyUI
+
+As you recall, ComfyUI requires Python 3.11.9. Let's create a new environment called `py311` and install Python 3.11.9 into it:
 
 ```sh
 conda create --name py311 --yes
@@ -267,7 +258,118 @@ conda activate py311
 conda install python=3.11.9 --yes
 ```
 
-### Creating `kohya`
+### Step 2. Clone ComfyUI Repository
+
+Assuming you have installed `git`, you can clone the repository. Easiest way is to navigate to the folder where you want to clone the repository, right-click and select `Git Bash Here` or `Open in Terminal`. Then you can use `git clone` command to clone the repository:
+
+```sh
+git clone https://github.com/comfyanonymous/ComfyUI.git
+```
+
+
+
+
+
+### Step 3. Set up VS Code
+
+As shown in the video, you can right-click on the folder and select `Open in Visual Studio Code`. Alternatively, you can open the project by typing `code .` in the terminal (while inside the folder). Save the workspace by choosing `Save Workspace As...` from the `File` menu. This will create a `.code-workspace` file in the folder. You can then open the project by double-clicking on the `.code-workspace` file.
+
+Workspace file is actually a JSON file that contains various settings for the project. For example, if you open the `.code-workspace` file in a text editor, you will see something like this:
+
+```jsonc
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {}
+}
+```
+
+Any changes made to the workspace settings are reflected in this file. This is convenient, because this lets me share my VS Code configuration with you:
+
+```jsonc
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+    "settings": {
+        "editor.fontSize": 16, // We increase the font size from 14 to 16 (just my personal preference)
+        "files.eol": "\n", // We set the 'end of line' character to '\n' (Unix-style line endings)
+        "editor.wordWrap": "on", // Long lines of code are to be wrapped to the next line.
+        "editor.defaultFormatter": "ms-python.black-formatter", // 'Black' is popular code formatter for Python.
+        "editor.formatOnSave": true, // Each time you save, the code will be formatted.
+
+        "markdownlint.run": "onSave",
+    },
+    "extensions": {
+        "recommendations": [
+            "ms-python.python", // Python extension
+            "ms-python.debugpy", // Python debugger
+            "donjayamanne.python-environment-manager", // Python environment manager
+            "ms-python.vscode-pylance", // Python language server
+            "ms-python.pylint", // Python linter
+            "ms-python.black-formatter" // Python code formatter
+        ]
+    }
+}
+```
+
+Once you save this and reopen the VS Code, you will be prompted to install these extensions. Of course, you can also install them manually by clicking on the `Extensions` icon on the left sidebar and searching for the extension name.
+
+### Step 4. Activate `py311` Environment
+
+Using Don Jayamanne's Python Environment Manager, you can set the active workspace environment by clicking the ⭐ icon next to `py311`.
+
+![alt text](Figures/screen01.png)
+
+Whenever you open the terminal in this workspace, it will automatically activate the `py310` environment. Note that you won't see the environment name in the brackets, but you can confirm the active environment by running `conda env list` command.
+
+### Step 5. Install Dependencies
+
+Lastly, we will run the script that installs all the dependencies.
+
+Assuming you have Windows, Nvidia graphics card with CUDA-compatible GPU, you run this command first:
+
+```sh
+pip install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cu121
+```
+
+The remaining dependencies are listed inside the `requirements.txt` file. You can install them using:
+
+```sh
+pip install -r requirements.txt
+```
+
+Lastly, you need ComfyUI Manager, which needs to be cloned inside custom_nodes folder. You first right-click on the `custom_nodes` folder and select `Open in Terminal`:
+
+![alt text](Figures/screen05.png)
+
+And then you clone the repository:
+
+```sh
+git clone https://github.com/ltdrdata/ComfyUI-Manager.git
+```
+
+And then you right-click on the `ComfyUI-Manager` folder and select `Open in Terminal`:
+
+![alt text](Figures/screen06.png)
+
+And then you install the dependencies:
+
+```sh
+pip install -r requirements.txt
+```
+
+And you are done. Launch the `main.py` file and you should see the ComfyUI running.
+
+![alt text](Figures/screen07.png)
+
+
+## Kohya GUI
 
 ```sh
 conda create --name kohya --yes
@@ -281,7 +383,7 @@ conda install cuda --channel nvidia/label/cuda-11.8.0 --yes
 
 ## Assignment Solution
 
-Note: This assignment assumes that you have Nvidia graphics card with CUDA-compatible GPU.
+In hindsight, this 'assignment' turned out to be way too hard, especially for someone just starting out.
 
 ### Step 1. Create Conda Environment
 
@@ -359,4 +461,4 @@ I resolved it using the following:
 pip install torch==2.3.0+cu121 torchaudio==2.3.0+cu121 torchvision==0.18.0+cu121 --extra-index-url https://download.pytorch.org/whl/cu121
 ```
 
-In hindsight, this 'assignment' was way too hard, especially for someone just starting out.
+

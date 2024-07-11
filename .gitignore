@@ -1,1 +1,4 @@
 gitrepo.code-workspace
+.pylintrc
+.markdownlint.jsonc
+*.psd
