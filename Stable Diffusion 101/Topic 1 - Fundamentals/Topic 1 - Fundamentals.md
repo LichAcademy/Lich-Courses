@@ -255,6 +255,8 @@ You should now be able to run the script as usual.
 
 <img src="Figures/screen02.png" alt="alt text" width="600" style="border:2px solid black;">
 
+![screen02](Figures/screen02.png)
+
 ### Creating `py311`
 
 ```sh
