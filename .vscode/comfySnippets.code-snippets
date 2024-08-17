@@ -1,0 +1,146 @@
+{
+    "Make ComfyUI node.": {
+        "scope": "python",
+        "prefix": "lch",
+        "body": [
+            "class ${1:MyComfyNode}:",
+            "    \"\"\"",
+            "    Summary",
+            "    ${2:Description of what node does.}",
+            "    \"\"\"",
+
+            "    @classmethod",
+            "    def INPUT_TYPES(cls):",
+
+            "        required = {",
+            "            \"${3:arg1}\": (\"${4|CHOOSE_TYPE,MODEL,CLIP,VAE,CONDITIONING,IMAGE,LATENT,CONTROL_NET,MY_CUSTOM_TYPE|}\",),",
+            "            \"${5:arg2}\": (\"${6|CHOOSE_TYPE,MODEL,CLIP,VAE,CONDITIONING,IMAGE,LATENT,CONTROL_NET,MY_CUSTOM_TYPE|}\",),",
+            "            \"${7:arg3}\": (\"${8|CHOOSE_TYPE,MODEL,CLIP,VAE,CONDITIONING,IMAGE,LATENT,CONTROL_NET,MY_CUSTOM_TYPE|}\",),",
+            "        }",
+            "        optional = {}",
+            "        hidden = {}",
+
+            "        data_in = {",
+            "            \"required\": required,",
+            "            \"optional\": optional,",
+            "            \"hidden\": hidden",
+            "        }",
+            "        return data_in",
+
+            "    RETURN_TYPES = (\"OUT_TYPE_1\", \"OUT_TYPE_2\")",
+            "    RETURN_NAMES = (\"out_arg_1\", \"out_arg_2\")",
+            "    FUNCTION = \"${9:main_function}\"",
+            "    CATEGORY = \"${10:Node Directory}\"",
+
+            "    def ${9:main_function}(self, ${3:arg1}, ${5:arg2}, ${7:arg3}):",
+
+            "        ${3:arg1}, ${5:arg2}, ${7:arg3}",
+            "        ",
+            "        out_1, out_2, out_3 = None",
+            "        ",
+            "        output_tuple = (out_1, out_2, out_3)",
+
+            "        return output_tuple\n"
+        ],
+        "description": "Template for basic ComfyUI node."
+    },
+    "Seed widget for ComfyUI.": {
+        "prefix": "seed",
+        "description": "Seed widget for ComfyUI nodes.",
+        "body": [
+            "\"seed\": (",
+            "    \"INT\",",
+            "    {",
+            "        \"default\": 0,",
+            "        \"min\": 0,",
+            "        \"max\": 0xFFFFFFFFFFFFFFFF,",
+            "        \"step\": 1,",
+            "    },",
+            "),\n"
+        ]
+    },
+    "Toggle switch (on/off widget) for ComfyUI nodes.": {
+        "prefix": "tgg",
+        "description": "Toggle switch (on/off widget) for ComfyUI nodes.",
+        "body": [
+            "\"${TM_SELECTED_TEXT:switch}\": (",
+            "    \"BOOLEAN\",",
+            "    {",
+            "        \"default\": ${1|True,False|}, # Default: True",
+            "        # \"label_on\": \"I'm On Baby\", (optional label rename; default is 'On')",
+            "        # \"label_off\": \"Turned Off Now\", (optional label rename; default is 'Off')",
+            "    },",
+            "),\n"
+        ]
+    },
+    "Multine widget suitable for prompt inputs.": {
+        "body": [
+            "\"${TM_SELECTED_TEXT:prompt_input}\": (",
+            "    \"STRING\",",
+            "    {",
+            "        \"multiline\": ${1|True,False|},",
+            "        \"dynamicPrompts\": ${2|True,False|},",
+            "    },",
+            "),\n"
+        ],
+        "description": "Multiline string widget for ComfyUI nodes.",
+        "prefix": "prm"
+    },
+    "model": {
+        "body": ["\"${TM_SELECTED_TEXT:model}\": (\"MODEL\",),\n"],
+        "description": "Model input",
+        "prefix": "mdl"
+    },
+    "Checkpoint Loader (Widget)": {
+        "body": [
+            "\"${TM_SELECTED_TEXT:ckpt_choose}\": (folder_paths.get_filename_list(\"checkpoints\"),),\n"
+        ],
+        "description": "Checkpoint Loader Widget",
+        "prefix": "ckpt"
+    },
+    "clip": {
+        "body": ["\"${TM_SELECTED_TEXT:clip}\": (\"CLIP\",),\n"],
+        "description": "CLIP input",
+        "prefix": "clp"
+    },
+    "VAE Loader (Widget)": {
+        "body": [
+            "\"${TM_SELECTED_TEXT:vae}\": (nodes.VAELoader.vae_list(),),\n"
+        ],
+        "description": "VAE connection input for ComfyUI",
+        "prefix": "vae"
+    },
+    "cond": {
+        "body": ["\"${TM_SELECTED_TEXT:cond}\": (\"CONDITIONING\",),\n"],
+        "description": "Conditioning input for ComfyUI node.",
+        "prefix": "cnd"
+    },
+    "latent": {
+        "body": ["\"${TM_SELECTED_TEXT:latent}\": (\"LATENT\",),\n"],
+        "description": "Latent input for ComfyUI node.",
+        "prefix": "ltn"
+    },
+    "image": {
+        "body": ["\"${TM_SELECTED_TEXT:image}\": (\"IMAGE\",),\n"],
+        "description": "Image input for ComfyUI node.",
+        "prefix": "img"
+    },
+    "controlnet": {
+        "body": ["\"${TM_SELECTED_TEXT:cnet}\": (\"CONTROL_NET\",),\n"],
+        "description": "ControlNet input for ComfyUI node.",
+        "prefix": "cnt"
+    },
+    "Global Comfy Imports": {
+        "body": [
+            "import nodes",
+            "import folder_paths",
+            "import comfy.samplers",
+            "",
+            "SAMPLERS: list[str] = comfy.samplers.KSampler.SAMPLERS",
+            "SCHEDULERS: list[str] = comfy.samplers.KSampler.SCHEDULERS",
+            "MAX_RESOLUTION: int = nodes.MAX_RESOLUTION\n"
+        ],
+        "description": "Imports SAMPLERS, SCHEDULERS and MAX_RESOLUTION.",
+        "prefix": "glb"
+    }
+}
