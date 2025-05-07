@@ -1,0 +1,99 @@
+{
+  // Markdown snippets
+  "definition": {
+    "prefix": "definition",
+    "description": "Definition shield.",
+    "scope": "markdown",
+    "body": ["![Def](https://img.shields.io/badge/Definition-%23900000)"]
+  },
+  "Markdown image": {
+    "prefix": "img_md",
+    "description": "HTML image within markdown",
+    "scope": "markdown",
+    "body": [
+      "<img src=\"$CLIPBOARD\" style=\"max-width: 400px; max-height: 400px;\">\n\n$0"
+    ]
+  },
+  "Markdown image centered": {
+    "prefix": "img_center",
+    "description": "Insert HTML image (400x400), centered.",
+    "scope": "markdown",
+    "body": [
+      "<p align=\"center\">",
+      "\t<img src=\"$CLIPBOARD\" style=\"max-width: 400px; max-height: 400px;\">",
+      "</p>\n\n$0"
+    ]
+  },
+  // Python snippets:
+  "PrintGreen": {
+    "prefix": "ansi_green",
+    "description": "Insert text in green.",
+    "scope": "python",
+    "body": ["\"\\033[32m$TM_SELECTED_TEXT\\033[0m\"$0"]
+  },
+  "PrintRed": {
+    "prefix": "ansi_red",
+    "description": "Insert text that will print in red.",
+    "scope": "python",
+    "body": ["\"\\033[31m$TM_SELECTED_TEXT\\033[0m\"$0"]
+  },
+  "open_tfile": {
+    "prefix": ["open_tfile", "read_tfile"],
+    "description": "Open the text file.",
+    "scope": "python",
+    "body": [
+      "# %%",
+      "from pathlib import Path",
+      "",
+      "",
+      "def open_tfile(file_path: str | Path) -> str | None:",
+      "    \"\"\"Reads the content of a text file.\"\"\"",
+      "    path = Path(file_path)  # Convert to Path if it's a string",
+      "    if path.exists():",
+      "        try:",
+      "            with path.open(\"r\", encoding=\"utf=8\") as file:",
+      "                return file.read()",
+      "        except Exception as e:",
+      "            print(f\"An unexpected error occurred while reading the file: {e}\")",
+      "            return None",
+      "    else:",
+      "        print(f\"Error: The file '{file_path}' does not exist.\")",
+      "        return None",
+      "",
+      "",
+      "# %%",
+      "content = open_tfile(\"${CLIPBOARD}\")",
+      "if content:",
+      "    print(\"File contents read.\")",
+      ""
+    ]
+  },
+  "save_tfile": {
+    "prefix": "save_tfile",
+    "description": "Save the string into text file.",
+    "scope": "python",
+    "body": [
+      "# %%",
+      "from pathlib import Path",
+      "",
+      "",
+      "def save_tfile(file_path: str | Path, data: str):",
+      "    \"\"\"Writes the string to a text file. If the file does not exist, it will be created.\"\"\"",
+      "    path = Path(file_path)  # Convert to Path if it's a string",
+      "    try:",
+      "        with path.open(\"w\") as file:",
+      "            file.write(data)",
+      "            print(\"Data successfully saved to the file.\")",
+      "    except Exception as e:",
+      "        print(f\"An error occurred while saving the file: {e}\")",
+      "",
+      "",
+      "# %%",
+      "save_tfile(",
+      "    file_path=\"${1:output.txt}\",",
+      "    data=\"${2:Data to save.}\",",
+      ")",
+      ""
+    ]
+  }
+}
